@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const controller = require("./controller");
+const { auth } = require("../../middlewares/auth");
 const {
   createAdValidator,
   updateAdValidator,
@@ -14,6 +15,8 @@ const upload = multer({
 });
 
 const router = express.Router();
+
+router.use(auth(["company"])); // Apenas empresas podem acessar
 
 router.post("/ads", createAdValidator, controller.createAd);
 router.get("/ads", listAdsValidator, controller.listAds);

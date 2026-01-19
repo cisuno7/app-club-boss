@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const controller = require("./controller");
+const { auth } = require("../../middlewares/auth");
 const {
   moderationActionValidator,
   bannerValidator,
@@ -15,6 +16,8 @@ const upload = multer({
 });
 
 const router = express.Router();
+
+router.use(auth(["admin"])); // Apenas admins podem acessar
 
 router.get("/moderation/pending", controller.listPendingAds);
 router.post("/moderation/:adId/approve", moderationActionValidator, controller.approveAd);
